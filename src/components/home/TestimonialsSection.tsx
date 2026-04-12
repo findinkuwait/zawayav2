@@ -24,8 +24,9 @@ export default function TestimonialsSection() {
     ];
 
     return (
-        <section className="py-24 bg-[#0a0a0a]">
-            <div className="container mx-auto px-6 md:px-12">
+        <section className="relative py-28 md:py-32 bg-alternate border-y border-border overflow-hidden">
+            <div className="absolute inset-0 architectural-grid opacity-20" />
+            <div className="container relative mx-auto px-6 md:px-12">
                 <div className="text-center mb-16 max-w-2xl mx-auto">
                     <SectionHeading title={t('title')} center />
                 </div>
@@ -38,23 +39,23 @@ export default function TestimonialsSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: idx * 0.2, duration: 0.6 }}
-                            className="bg-secondary p-12 md:p-10 rounded-2xl relative border border-white/5 shadow-2xl shadow-black/50 hover:border-accent/30 transition-colors"
+                            className="bg-white p-12 md:p-12 rounded-lg relative border border-border shadow-[0_18px_50px_rgba(26,26,26,0.08)] hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(26,26,26,0.14)] transition-all"
                         >
                             <Quote size={40} className="text-accent/20 absolute top-8 right-8" />
 
                             <div className="flex gap-1.5 md:gap-1 mb-8 md:mb-6">
                                 {[...Array(test.stars)].map((_, i) => (
-                                    <Star key={i} size={20} className="text-accent fill-accent w-5 h-5 md:w-[18px] md:h-[18px]" />
+                                    <Star key={i} size={20} className="text-primary fill-primary w-5 h-5 md:w-[18px] md:h-[18px]" />
                                 ))}
                             </div>
 
-                            <p className="text-2xl md:text-xl text-gray-300 font-en-body font-ar-body italic leading-relaxed mb-10 md:mb-8">
+                            <p className="text-2xl md:text-xl text-secondary font-en-body font-ar-body italic leading-relaxed mb-10 md:mb-8">
                                 &quot;{test.text}&quot;
                             </p>
 
                             <div>
-                                <h4 className="font-bold text-white font-en-heading font-ar-heading text-lg">{test.author}</h4>
-                                <p className="text-gray-500 font-en-body font-ar-body text-sm">{test.company}</p>
+                                <h4 className="font-bold text-primary font-en-heading font-ar-heading text-lg">{test.author}</h4>
+                                <p className="text-secondary font-en-body font-ar-body text-sm">{test.company}</p>
                             </div>
                         </motion.div>
                     ))}

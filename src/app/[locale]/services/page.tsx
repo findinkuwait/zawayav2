@@ -23,10 +23,11 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
     ];
 
     return (
-        <div className="pt-40 pb-24 bg-[#0a0a0a] min-h-screen">
-            <div className="container mx-auto px-6 md:px-12">
+        <div className="relative pt-40 pb-28 bg-alternate min-h-screen overflow-hidden">
+            <div className="absolute inset-0 architectural-grid opacity-20" />
+            <div className="container relative mx-auto px-6 md:px-12">
                 <SectionHeading title={t('title')} subtitle={t('subtitle')} center />
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-16">
                     {services.map((service, idx) => (
                         <ServiceCard key={idx} title={service.title} description={service.desc} icon={service.icon} />
                     ))}

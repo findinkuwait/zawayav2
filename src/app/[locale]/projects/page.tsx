@@ -1,5 +1,4 @@
 import { getTranslations } from 'next-intl/server';
-import SectionHeading from '@/components/ui/SectionHeading';
 import ProjectsSection from '@/components/home/ProjectsSection'; // Reusing section
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {

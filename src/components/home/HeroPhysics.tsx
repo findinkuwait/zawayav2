@@ -15,7 +15,6 @@ export default function HeroPhysics() {
         const Engine = Matter.Engine,
             Render = Matter.Render,
             Runner = Matter.Runner,
-            Mouse = Matter.Mouse,
             World = Matter.World,
             Bodies = Matter.Bodies,
             Events = Matter.Events;
@@ -57,8 +56,8 @@ export default function HeroPhysics() {
 
             // Randomize shape type: 0 = thin line, 1 = frame, 2 = arch
             const shapeType = Math.floor(Math.random() * 3);
-            const color = Math.random() > 0.7 ? '#C8A46A' : '#ffffff';
-            const opacity = Math.random() * 0.2 + 0.1;
+            const color = Math.random() > 0.7 ? '#E2DFDA' : '#3A3A3A';
+            const opacity = Math.random() * 0.08 + 0.04;
 
             const options = {
                 frictionAir: 0.015, // Smooth, slow drift
@@ -142,7 +141,6 @@ export default function HeroPhysics() {
         });
 
         // Add mouse repulsion interaction
-        const mouse = Mouse.create(sceneRef.current);
         let lastMousePos = { x: width / 2, y: height / 2 };
 
         const handleMouseMove = (e: MouseEvent) => {
@@ -215,7 +213,7 @@ export default function HeroPhysics() {
     return (
         <div
             ref={sceneRef}
-            className="absolute inset-0 z-0 pointer-events-none opacity-60"
+            className="absolute inset-0 z-0 pointer-events-none opacity-40"
             aria-hidden="true"
         />
     );

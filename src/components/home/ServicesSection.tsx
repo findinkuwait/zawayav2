@@ -17,8 +17,9 @@ export default function ServicesSection() {
     ];
 
     return (
-        <section className="py-24 bg-[#0a0a0a]">
-            <div className="container mx-auto px-6 md:px-12">
+        <section className="relative py-28 md:py-32 bg-alternate border-y border-border overflow-hidden">
+            <div className="absolute inset-0 architectural-grid opacity-25" />
+            <div className="container relative mx-auto px-6 md:px-12">
                 <div className="text-center max-w-3xl mx-auto mb-20 md:mb-16">
                     <SectionHeading title={t('title')} subtitle={t('subtitle')} />
                 </div>

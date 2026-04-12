@@ -35,8 +35,9 @@ export default function StatsSection() {
     ];
 
     return (
-        <section className="py-24 bg-secondary text-primary">
-            <div className="container mx-auto px-8 md:px-12">
+        <section className="relative py-28 bg-alternate text-primary border-y border-border overflow-hidden">
+            <div className="absolute inset-0 architectural-grid opacity-30" />
+            <div className="container relative mx-auto px-8 md:px-12">
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8 md:gap-12">
                     {stats.map((stat, idx) => (
                         <motion.div
@@ -47,10 +48,10 @@ export default function StatsSection() {
                             transition={{ duration: 0.6, delay: idx * 0.1 }}
                             className="text-center group"
                         >
-                            <div className="text-6xl md:text-7xl font-bold font-en-heading font-ar-heading mb-4 text-white group-hover:text-accent transition-colors duration-300">
+                            <div className="text-6xl md:text-8xl font-bold font-en-heading font-ar-heading mb-5 text-primary group-hover:text-accent transition-colors duration-300">
                                 <Counter from={0} to={stat.value} duration={2} />{stat.suffix}
                             </div>
-                            <div className="text-xs md:text-sm font-medium font-en-body font-ar-body uppercase tracking-wider text-gray-400">
+                            <div className="text-xs md:text-sm font-medium font-en-body font-ar-body uppercase text-secondary">
                                 {stat.label}
                             </div>
                         </motion.div>

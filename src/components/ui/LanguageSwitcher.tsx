@@ -22,7 +22,7 @@ export default function LanguageSwitcher() {
         <button
             onClick={onSelectChange}
             disabled={isPending}
-            className="flex items-center gap-2 hover:text-accent transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 text-primary hover:text-secondary transition-colors disabled:opacity-50"
             aria-label="Switch Language"
         >
             <Globe size={18} />

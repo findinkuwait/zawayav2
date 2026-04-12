@@ -1,13 +1,11 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { Phone, MessageCircle, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export default function MobileContactBar() {
-    const t = useTranslations('Navigation');
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -32,17 +30,17 @@ export default function MobileContactBar() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 100, opacity: 0 }}
                     transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                    className="md:hidden fixed bottom-6 left-4 right-4 z-50 bg-[#121212]/95 backdrop-blur-md border border-white/10 p-2 rounded-2xl shadow-2xl flex items-center justify-between"
+                    className="md:hidden fixed bottom-6 left-4 right-4 z-50 bg-white/95 backdrop-blur-md border border-border p-2 rounded-lg shadow-[0_18px_45px_rgba(26,26,26,0.14)] flex items-center justify-between"
                 >
                     <a
                         href="tel:+96512345678"
-                        className="flex-1 flex flex-col items-center justify-center py-2 text-gray-300 hover:text-white transition-colors active:scale-95"
+                        className="flex-1 flex flex-col items-center justify-center py-2 text-secondary hover:text-primary transition-colors active:scale-95"
                     >
                         <Phone size={20} className="mb-1" />
-                        <span className="text-[10px] font-en-body font-ar-body font-medium uppercase tracking-wider">Call</span>
+                        <span className="text-[10px] font-en-body font-ar-body font-medium uppercase">Call</span>
                     </a>
 
-                    <div className="w-[1px] h-8 bg-white/10" />
+                    <div className="w-[1px] h-8 bg-border" />
 
                     <a
                         href="https://wa.me/96512345678"
@@ -51,17 +49,17 @@ export default function MobileContactBar() {
                         className="flex-1 flex flex-col items-center justify-center py-2 text-green-400 hover:text-green-300 transition-colors active:scale-95"
                     >
                         <MessageCircle size={20} className="mb-1" />
-                        <span className="text-[10px] font-en-body font-ar-body font-medium uppercase tracking-wider">WhatsApp</span>
+                        <span className="text-[10px] font-en-body font-ar-body font-medium uppercase">WhatsApp</span>
                     </a>
 
-                    <div className="w-[1px] h-8 bg-white/10" />
+                    <div className="w-[1px] h-8 bg-border" />
 
                     <Link
                         href="/contact"
-                        className="flex-1 flex flex-col items-center justify-center py-2 text-accent hover:text-accent-hover transition-colors active:scale-95"
+                        className="flex-1 flex flex-col items-center justify-center py-2 text-primary hover:text-secondary transition-colors active:scale-95"
                     >
                         <Mail size={20} className="mb-1" />
-                        <span className="text-[10px] font-en-body font-ar-body font-medium uppercase tracking-wider">Email</span>
+                        <span className="text-[10px] font-en-body font-ar-body font-medium uppercase">Email</span>
                     </Link>
                 </motion.div>
             )}

@@ -16,18 +16,19 @@ export default function ProcessSection() {
     ];
 
     return (
-        <section className="py-24 bg-[#0a0a0a] border-t border-white/5">
-            <div className="container mx-auto px-6 md:px-12">
+        <section className="relative py-28 md:py-32 bg-alternate border-y border-border overflow-hidden">
+            <div className="absolute inset-0 architectural-grid opacity-20" />
+            <div className="container relative mx-auto px-6 md:px-12">
                 <div className="text-center mb-20">
                     <SectionHeading title={t('title')} subtitle={t('subtitle')} center />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-10 relative">
                     {/* Connecting line (Desktop) */}
-                    <div className="hidden md:block absolute top-12 left-[10%] right-[10%] h-[1px] bg-white/10" />
+                    <div className="hidden md:block absolute top-12 left-[10%] right-[10%] h-[1px] bg-border" />
 
                     {/* Vertical Timeline Line (Mobile) */}
-                    <div className="md:hidden absolute top-0 bottom-0 left-[3rem] w-[1px] bg-white/10" />
+                    <div className="md:hidden absolute top-0 bottom-0 left-[3rem] w-[1px] bg-border" />
 
                     {steps.map((step, idx) => (
                         <motion.div
@@ -38,15 +39,15 @@ export default function ProcessSection() {
                             transition={{ duration: 0.5, delay: idx * 0.1 }}
                             className="relative flex flex-row md:flex-col items-start md:items-center text-left md:text-center z-10 gap-6 md:gap-0"
                         >
-                            <div className="w-24 h-24 shrink-0 rounded-full bg-[#1a1a1a] border border-white/10 shadow-2xl flex items-center justify-center text-white md:mb-6 relative group overflow-hidden">
+                            <div className="w-24 h-24 shrink-0 rounded-full bg-white border border-border shadow-[0_18px_45px_rgba(26,26,26,0.1)] flex items-center justify-center text-primary md:mb-6 relative group overflow-hidden">
                                 <div className="absolute inset-0 bg-accent transform scale-0 rounded-full transition-transform duration-300 group-hover:scale-100" />
-                                <step.icon size={36} className="relative z-10 transition-colors duration-300 group-hover:text-[#0f0f0f]" />
+                                <step.icon size={36} className="relative z-10 transition-colors duration-300 group-hover:text-white" />
                                 {/* Step Number */}
-                                <div className="absolute top-2 right-2 text-white/20 text-sm font-bold opacity-50 font-en-heading">0{idx + 1}</div>
+                                <div className="absolute top-2 right-2 text-secondary/30 text-sm font-bold font-en-heading">0{idx + 1}</div>
                             </div>
                             <div>
-                                <h3 className="text-xl font-bold text-white font-en-heading font-ar-heading mb-3">{step.title}</h3>
-                                <p className="text-gray-400 font-en-body font-ar-body">{step.desc}</p>
+                                <h3 className="text-xl font-bold text-primary font-en-heading font-ar-heading mb-3">{step.title}</h3>
+                                <p className="text-secondary font-en-body font-ar-body">{step.desc}</p>
                             </div>
                         </motion.div>
                     ))}
