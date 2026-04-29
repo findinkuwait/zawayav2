@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
-export async function generateMetadata({ params: { locale, slug } }: { params: { locale: string, slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+    const { locale, slug } = await params;
     const t = await getTranslations({ locale, namespace: 'Projects.Meta' });
     return {
         title: `${slug.replace('-', ' ')} | Zawaya`,

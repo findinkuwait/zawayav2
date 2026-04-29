@@ -2,7 +2,8 @@ import { getTranslations } from 'next-intl/server';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { Phone, Mail, MapPin, Instagram, Facebook, Linkedin } from 'lucide-react';
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Contact.Meta' });
     return {
         title: t('title'),

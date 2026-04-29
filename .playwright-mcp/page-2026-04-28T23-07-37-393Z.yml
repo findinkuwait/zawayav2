@@ -1,0 +1,343 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Zawaya International" [ref=e4] [cursor=pointer]:
+        - /url: /en
+        - img "Zawaya International" [ref=e5]
+      - navigation [ref=e6]:
+        - link "Home" [ref=e7] [cursor=pointer]:
+          - /url: /en
+        - link "About" [ref=e8] [cursor=pointer]:
+          - /url: /en/about
+        - link "Services" [ref=e9] [cursor=pointer]:
+          - /url: /en/services
+        - link "Projects" [ref=e10] [cursor=pointer]:
+          - /url: /en/projects
+        - link "Process" [ref=e11] [cursor=pointer]:
+          - /url: /en/process
+        - link "Clients" [ref=e12] [cursor=pointer]:
+          - /url: /en/clients
+      - generic [ref=e13]:
+        - button "Switch Language" [ref=e14]:
+          - img [ref=e15]
+          - generic [ref=e18]: العربية
+        - link "Contact" [ref=e19] [cursor=pointer]:
+          - /url: /en/contact
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - paragraph [ref=e27]: Interior Design & Fit-Out Studio
+          - heading "Transforming Spaces Into Timeless Experiences" [level=1] [ref=e28]:
+            - generic [ref=e30]: Transforming
+            - generic [ref=e32]: Spaces
+            - generic [ref=e34]: Into
+            - generic [ref=e36]: Timeless
+            - generic [ref=e38]: Experiences
+          - paragraph [ref=e39]: High-End Interior Fit-Out & Retail Space Design
+          - generic [ref=e40]:
+            - link "Explore Our Portfolio" [ref=e41] [cursor=pointer]:
+              - /url: /en/projects
+              - text: Explore Our Portfolio
+              - img [ref=e42]
+            - link "Book Free Consultation" [ref=e44] [cursor=pointer]:
+              - /url: /en/contact
+              - generic [ref=e45]: Book Free Consultation
+        - generic [ref=e47]:
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - generic [ref=e50]: 120+
+              - generic [ref=e51]: Projects
+            - generic [ref=e52]:
+              - generic [ref=e53]: 15+
+              - generic [ref=e54]: Years
+            - generic [ref=e55]:
+              - generic [ref=e56]: 8+
+              - generic [ref=e57]: Countries
+          - generic [ref=e58]:
+            - generic [ref=e59]: Scroll
+            - img [ref=e60]
+      - generic [ref=e62]:
+        - img "Interior design by Zawaya International" [ref=e64]
+        - generic [ref=e65]:
+          - paragraph [ref=e66]: 15+
+          - paragraph [ref=e67]: Years of Craft
+        - generic [ref=e68]:
+          - paragraph [ref=e69]: Featured Project
+          - paragraph [ref=e70]: Luxury Hotel Lobby, Kuwait
+    - generic [ref=e72]:
+      - generic [ref=e74]: INTERIOR FIT-OUT
+      - generic [ref=e77]: RETAIL SPACE DESIGN
+      - generic [ref=e80]: HOSPITALITY INTERIORS
+      - generic [ref=e83]: PROJECT MANAGEMENT
+      - generic [ref=e86]: ZAWAYA INTERNATIONAL
+      - generic [ref=e89]: INTERIOR FIT-OUT
+      - generic [ref=e92]: RETAIL SPACE DESIGN
+      - generic [ref=e95]: HOSPITALITY INTERIORS
+      - generic [ref=e98]: PROJECT MANAGEMENT
+      - generic [ref=e101]: ZAWAYA INTERNATIONAL
+      - generic [ref=e104]: INTERIOR FIT-OUT
+      - generic [ref=e107]: RETAIL SPACE DESIGN
+      - generic [ref=e110]: HOSPITALITY INTERIORS
+      - generic [ref=e113]: PROJECT MANAGEMENT
+      - generic [ref=e116]: ZAWAYA INTERNATIONAL
+      - generic [ref=e119]: INTERIOR FIT-OUT
+      - generic [ref=e122]: RETAIL SPACE DESIGN
+      - generic [ref=e125]: HOSPITALITY INTERIORS
+      - generic [ref=e128]: PROJECT MANAGEMENT
+      - generic [ref=e131]: ZAWAYA INTERNATIONAL
+    - generic [ref=e135]:
+      - generic [ref=e136]:
+        - generic [ref=e137]: 0+
+        - paragraph [ref=e138]: Years Experience
+      - generic [ref=e139]:
+        - generic [ref=e140]: 0+
+        - paragraph [ref=e141]: Projects Completed
+      - generic [ref=e142]:
+        - generic [ref=e143]: 0+
+        - paragraph [ref=e144]: Commercial Clients
+      - generic [ref=e145]:
+        - generic [ref=e146]: "0"
+        - paragraph [ref=e147]: Countries Served
+    - generic [ref=e150]:
+      - generic [ref=e151]:
+        - generic: "15"
+        - paragraph [ref=e155]: Est. 2008
+      - generic [ref=e156]:
+        - heading "About Zawaya International" [level=2] [ref=e159]
+        - generic [ref=e160]:
+          - paragraph [ref=e161]: Zawaya International is a specialized interior fit-out contractor delivering premium design and finishing solutions for commercial and hospitality spaces. We collaborate closely with brands and businesses to transform concepts into visually striking environments that enhance customer experience and elevate brand identity.
+          - paragraph [ref=e162]: Our expertise covers design development, project management, interior construction, and high-end finishing works.
+        - generic [ref=e163]:
+          - paragraph [ref=e164]: 120+ Premium Projects
+          - paragraph [ref=e165]: Across Kuwait & the region
+        - link "Learn More" [ref=e166] [cursor=pointer]:
+          - /url: /en/about
+          - text: Learn More
+          - img [ref=e167]
+    - generic [ref=e172]:
+      - generic [ref=e173]:
+        - heading "Our Expertise" [level=2] [ref=e175]
+        - paragraph [ref=e176]: Comprehensive fit-out solutions tailored for luxury and commercial environments.
+      - list [ref=e177]:
+        - listitem [ref=e178]:
+          - generic [ref=e179]:
+            - generic [ref=e180]: "01"
+            - generic [ref=e181]: Interior Fit-Out
+            - img [ref=e182]
+          - paragraph [ref=e185]: Complete interior construction and finishing services for commercial spaces including structural works, partitions, ceilings, lighting systems, and custom installations.
+        - listitem [ref=e186]:
+          - generic [ref=e187]:
+            - generic [ref=e188]: "02"
+            - generic [ref=e189]: Retail Space Design
+            - img [ref=e190]
+        - listitem [ref=e193]:
+          - generic [ref=e194]:
+            - generic [ref=e195]: "03"
+            - generic [ref=e196]: Hospitality Interiors
+            - img [ref=e197]
+        - listitem [ref=e200]:
+          - generic [ref=e201]:
+            - generic [ref=e202]: "04"
+            - generic [ref=e203]: Project Management
+            - img [ref=e204]
+    - generic [ref=e208]:
+      - generic [ref=e209]:
+        - heading "Our Portfolio" [level=2] [ref=e212]
+        - link "View All Projects" [ref=e213] [cursor=pointer]:
+          - /url: /en/projects
+          - text: View All Projects
+          - img [ref=e214]
+      - generic [ref=e217]:
+        - link "Retail 01 Luxury Boutique, Avenues Kuwait City" [ref=e220] [cursor=pointer]:
+          - /url: /en/projects/p1
+          - generic [ref=e223]: Retail
+          - generic: "01"
+          - generic [ref=e225]:
+            - generic [ref=e226]:
+              - heading "Luxury Boutique, Avenues" [level=3] [ref=e227]
+              - paragraph [ref=e228]: Kuwait City
+            - img [ref=e230]
+        - generic [ref=e233]:
+          - link "Hospitality 02 Grand Hotel Lobby Dubai, UAE" [ref=e235] [cursor=pointer]:
+            - /url: /en/projects/p2
+            - generic [ref=e238]: Hospitality
+            - generic: "02"
+            - generic [ref=e240]:
+              - generic [ref=e241]:
+                - heading "Grand Hotel Lobby" [level=3] [ref=e242]
+                - paragraph [ref=e243]: Dubai, UAE
+              - img [ref=e245]
+          - link "Retail 03 Concept Store Riyadh, KSA" [ref=e249] [cursor=pointer]:
+            - /url: /en/projects/p3
+            - generic [ref=e252]: Retail
+            - generic: "03"
+            - generic [ref=e254]:
+              - generic [ref=e255]:
+                - heading "Concept Store" [level=3] [ref=e256]
+                - paragraph [ref=e257]: Riyadh, KSA
+              - img [ref=e259]
+        - link "Residential 04 Modern Penthouse Doha, Qatar" [ref=e264] [cursor=pointer]:
+          - /url: /en/projects/p4
+          - generic [ref=e267]: Residential
+          - generic: "04"
+          - generic [ref=e269]:
+            - generic [ref=e270]:
+              - heading "Modern Penthouse" [level=3] [ref=e271]
+              - paragraph [ref=e272]: Doha, Qatar
+            - img [ref=e274]
+      - link "View All Projects" [ref=e278] [cursor=pointer]:
+        - /url: /en/projects
+        - text: View All Projects
+        - img [ref=e279]
+    - generic [ref=e283]:
+      - generic [ref=e284]:
+        - heading "Our Work Process" [level=2] [ref=e286]
+        - paragraph [ref=e287]: A structured approach from concept to reality.
+      - generic [ref=e288]:
+        - generic [ref=e289]:
+          - img [ref=e292]
+          - generic [ref=e294]:
+            - paragraph [ref=e295]: Step 01
+            - heading "Consultation" [level=3] [ref=e296]
+            - paragraph [ref=e297]: We understand your brand, space requirements, and project goals.
+        - generic [ref=e298]:
+          - img [ref=e301]
+          - generic [ref=e306]:
+            - paragraph [ref=e307]: Step 02
+            - heading "Concept Design" [level=3] [ref=e308]
+            - paragraph [ref=e309]: Our design team develops layouts and visual concepts.
+        - generic [ref=e310]:
+          - img [ref=e313]
+          - generic [ref=e317]:
+            - paragraph [ref=e318]: Step 03
+            - heading "Execution" [level=3] [ref=e319]
+            - paragraph [ref=e320]: Our technical team manages construction and interior works.
+        - generic [ref=e321]:
+          - img [ref=e324]
+          - generic [ref=e327]:
+            - paragraph [ref=e328]: Step 04
+            - heading "Delivery" [level=3] [ref=e329]
+            - paragraph [ref=e330]: We deliver the completed space ready for operation.
+    - generic [ref=e332]:
+      - generic [ref=e333]:
+        - heading "Why Choose Zawaya" [level=2] [ref=e336]
+        - paragraph [ref=e337]: 15+ years of expertise across the region
+      - generic [ref=e338]:
+        - generic [ref=e339]:
+          - img [ref=e342]
+          - generic [ref=e347]:
+            - heading "Experienced Team" [level=3] [ref=e348]
+            - paragraph [ref=e349]: Highly skilled architects, designers, and engineers.
+        - generic [ref=e350]:
+          - img [ref=e353]
+          - generic [ref=e356]:
+            - heading "Premium Materials" [level=3] [ref=e357]
+            - paragraph [ref=e358]: We use high-quality materials and finishing solutions.
+        - generic [ref=e359]:
+          - img [ref=e362]
+          - generic [ref=e365]:
+            - heading "On-Time Delivery" [level=3] [ref=e366]
+            - paragraph [ref=e367]: Efficient project planning and timely completion.
+        - generic [ref=e368]:
+          - img [ref=e371]
+          - generic [ref=e375]:
+            - heading "Tailored Solutions" [level=3] [ref=e376]
+            - paragraph [ref=e377]: Every project is customized to meet client needs.
+    - generic [ref=e379]:
+      - paragraph [ref=e380]: Client Testimonials
+      - generic [ref=e381]:
+        - generic [ref=e382]:
+          - generic [ref=e383]: “
+          - paragraph [ref=e384]: Zawaya International delivered our retail store exactly as envisioned. Their attention to detail and execution quality exceeded expectations.
+          - generic [ref=e385]:
+            - generic [ref=e387]: Abdullah Al-Saud
+            - generic [ref=e388]: CEO, Retail Brands Group
+        - generic [ref=e389]:
+          - button "Previous testimonial" [ref=e390]:
+            - img [ref=e391]
+          - generic [ref=e393]:
+            - button "Go to testimonial 1" [ref=e394]
+            - button "Go to testimonial 2" [ref=e395]
+          - button "Next testimonial" [ref=e396]:
+            - img [ref=e397]
+    - generic [ref=e399]:
+      - generic: ZAWAYA
+      - generic [ref=e400]:
+        - paragraph [ref=e401]: Ready to Begin?
+        - heading "Start Your Project With Us" [level=2] [ref=e402]:
+          - generic [ref=e404]: Start
+          - generic [ref=e406]: Your
+          - generic [ref=e408]: Project
+          - generic [ref=e410]: With
+          - generic [ref=e412]: Us
+        - paragraph [ref=e413]: Let's transform your vision into a remarkable space.
+        - generic [ref=e414]:
+          - link "Request Consultation" [ref=e415] [cursor=pointer]:
+            - /url: /en/contact
+          - link "Contact Us" [ref=e416] [cursor=pointer]:
+            - /url: /en/contact
+            - text: Contact Us
+            - img [ref=e417]
+  - contentinfo [ref=e419]:
+    - generic: ZAWAYA
+    - generic [ref=e421]:
+      - generic [ref=e422]:
+        - generic [ref=e423]:
+          - link "Zawaya International Logo" [ref=e424] [cursor=pointer]:
+            - /url: /en
+            - img "Zawaya International Logo" [ref=e425]
+          - paragraph [ref=e426]: Crafting exceptional interior spaces across Kuwait and the region.
+          - link "Instagram" [ref=e427] [cursor=pointer]:
+            - /url: https://instagram.com
+            - img [ref=e428]
+            - text: Instagram
+            - img [ref=e431]
+        - generic [ref=e434]:
+          - heading "Company" [level=4] [ref=e435]
+          - list [ref=e436]:
+            - listitem [ref=e437]:
+              - link "About" [ref=e438] [cursor=pointer]:
+                - /url: /en/about
+            - listitem [ref=e439]:
+              - link "Services" [ref=e440] [cursor=pointer]:
+                - /url: /en/services
+            - listitem [ref=e441]:
+              - link "Projects" [ref=e442] [cursor=pointer]:
+                - /url: /en/projects
+            - listitem [ref=e443]:
+              - link "Process" [ref=e444] [cursor=pointer]:
+                - /url: /en/process
+            - listitem [ref=e445]:
+              - link "Contact" [ref=e446] [cursor=pointer]:
+                - /url: /en/contact
+        - generic [ref=e447]:
+          - heading "Contact" [level=4] [ref=e448]
+          - list [ref=e449]:
+            - listitem [ref=e450]:
+              - img [ref=e451]
+              - generic [ref=e454]:
+                - text: Kuwait City, Al Asimah
+                - text: Zawaya International Studios
+            - listitem [ref=e455]:
+              - img [ref=e456]
+              - link "+965 1234 5678" [ref=e458] [cursor=pointer]:
+                - /url: tel:+96512345678
+            - listitem [ref=e459]:
+              - img [ref=e460]
+              - link "info@zawayainternational.com" [ref=e463] [cursor=pointer]:
+                - /url: mailto:info@zawayainternational.com
+        - generic [ref=e465]:
+          - heading "Start a Project" [level=4] [ref=e466]
+          - paragraph [ref=e467]: Ready to transform your space? Let's talk.
+          - link "Get in Touch" [ref=e468] [cursor=pointer]:
+            - /url: /en/contact
+      - generic [ref=e469]:
+        - paragraph [ref=e470]: © 2026 Zawaya International. All rights reserved.
+        - paragraph [ref=e471]: Premium Interior Fit-Out & Retail Design
+  - link "Contact us on WhatsApp" [ref=e476] [cursor=pointer]:
+    - /url: https://wa.me/96512345678
+    - img [ref=e477]
+  - button "Open Next.js Dev Tools" [ref=e484] [cursor=pointer]:
+    - img [ref=e485]
+  - alert [ref=e488]

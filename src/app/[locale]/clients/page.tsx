@@ -1,7 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 import SectionHeading from '@/components/ui/SectionHeading';
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Clients.Meta' });
     return {
         title: t('title'),

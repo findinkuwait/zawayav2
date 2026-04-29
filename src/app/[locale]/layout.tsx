@@ -18,6 +18,9 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp';
 import MobileContactBar from '@/components/layout/MobileContactBar';
+import SmoothScrollProvider from '@/components/ui/SmoothScrollProvider';
+import CustomCursor from '@/components/ui/CustomCursor';
+import PageLoader from '@/components/ui/PageLoader';
 
 export default async function LocaleLayout({
     children,
@@ -39,11 +42,15 @@ export default async function LocaleLayout({
         <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={`${playfair.variable} ${inter.variable} ${cairo.variable} ${tajawal.variable}`} suppressHydrationWarning>
             <body className="flex flex-col min-h-screen" suppressHydrationWarning>
                 <NextIntlClientProvider messages={messages}>
+                    <PageLoader />
+                    <CustomCursor />
                     <Header />
-                    <main className="flex-grow">
-                        {children}
-                    </main>
-                    <Footer />
+                    <SmoothScrollProvider>
+                        <main className="flex-grow">
+                            {children}
+                        </main>
+                        <Footer />
+                    </SmoothScrollProvider>
                     <MobileContactBar />
                     <FloatingWhatsApp />
                 </NextIntlClientProvider>

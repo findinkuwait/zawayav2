@@ -4,21 +4,15 @@ import { useTranslations } from 'next-intl';
 import { motion, useInView, animate } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 
-function Counter({ from, to, duration = 2 }: { from: number, to: number, duration?: number }) {
+function Counter({ from, to, duration = 2 }: { from: number; to: number; duration?: number }) {
     const ref = useRef<HTMLSpanElement>(null);
     const inView = useInView(ref, { once: true });
     const [value, setValue] = useState(from);
 
     useEffect(() => {
-        if (inView) {
-            const controls = animate(from, to, {
-                duration,
-                onUpdate(value) {
-                    setValue(Math.floor(value));
-                }
-            });
-            return () => controls.stop();
-        }
+        if (!inView) return;
+        const ctrl = animate(from, to, { duration, onUpdate: (v) => setValue(Math.floor(v)) });
+        return () => ctrl.stop();
     }, [from, to, duration, inView]);
 
     return <span ref={ref}>{value}</span>;
@@ -31,29 +25,30 @@ export default function StatsSection() {
         { value: 15, suffix: '+', label: t('expLabel') },
         { value: 120, suffix: '+', label: t('projectsLabel') },
         { value: 40, suffix: '+', label: t('clientsLabel') },
-        { value: 5, suffix: '', label: t('countriesLabel') }
+        { value: 5, suffix: '', label: t('countriesLabel') },
     ];
 
     return (
-        <section className="relative py-28 bg-alternate text-primary border-y border-border overflow-hidden">
-            <div className="absolute inset-0 architectural-grid opacity-30" />
-            <div className="container relative mx-auto px-8 md:px-12">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8 md:gap-12">
+        <section className="bg-background border-y border-border">
+            <div className="container mx-auto px-6 md:px-12">
+                <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-border">
                     {stats.map((stat, idx) => (
                         <motion.div
                             key={idx}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: idx * 0.1 }}
-                            className="text-center group"
+                            transition={{ duration: 0.55, delay: idx * 0.09 }}
+                            className="flex-1 text-center py-14 px-4 group"
                         >
-                            <div className="text-6xl md:text-8xl font-bold font-en-heading font-ar-heading mb-5 text-primary group-hover:text-accent transition-colors duration-300">
-                                <Counter from={0} to={stat.value} duration={2} />{stat.suffix}
+                            {/* Number */}
+                            <div className="font-heading font-bold text-display leading-none mb-3 text-6xl md:text-8xl">
+                                <Counter from={0} to={stat.value} duration={2} />
+                                <span className="text-3xl md:text-4xl font-light text-accent ms-0.5">{stat.suffix}</span>
                             </div>
-                            <div className="text-xs md:text-sm font-medium font-en-body font-ar-body uppercase text-secondary">
+                            <p className="text-[10px] font-body uppercase tracking-[0.28em] text-secondary mt-3">
                                 {stat.label}
-                            </div>
+                            </p>
                         </motion.div>
                     ))}
                 </div>

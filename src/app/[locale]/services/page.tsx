@@ -3,7 +3,8 @@ import SectionHeading from '@/components/ui/SectionHeading';
 import ServiceCard from '@/components/ui/ServiceCard';
 import { PenTool, Store, Coffee, Briefcase } from 'lucide-react';
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Services.Meta' });
     return {
         title: t('title'),
