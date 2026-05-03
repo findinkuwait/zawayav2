@@ -11,32 +11,50 @@ interface Props {
 }
 
 export default function ImageUpload({ label = 'Image', currentUrl, onUploaded }: Props) {
-    const [preview, setPreview]   = useState<string | null>(currentUrl ?? null)
+    const [preview, setPreview]     = useState<string | null>(currentUrl ?? null)
     const [uploading, setUploading] = useState(false)
-    const [error, setError]       = useState('')
+    const [progress, setProgress]   = useState('')
+    const [error, setError]         = useState('')
     const inputRef = useRef<HTMLInputElement>(null)
 
     async function handleFile(file: File) {
         setError('')
-        if (file.size > 4 * 1024 * 1024) {
-            setError('Image is too large (max 4 MB). Please compress it first.')
-            return
-        }
         setUploading(true)
+        setProgress('Preparing…')
         try {
-            const fd = new FormData()
-            fd.append('file', file)
-            const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-            const text = await res.text()
-            let data: { assetId?: string; url?: string; error?: string }
-            try { data = JSON.parse(text) } catch { throw new Error(text.slice(0, 120)) }
-            if (!res.ok) throw new Error(data.error || 'Upload failed')
-            setPreview(data.url)
-            onUploaded(data.assetId, data.url)
+            // Get short-lived credentials from our protected endpoint
+            const credRes = await fetch('/api/admin/upload-credentials')
+            if (!credRes.ok) throw new Error('Not authorized')
+            const { projectId, dataset, token } = await credRes.json()
+
+            setProgress('Uploading…')
+
+            // Upload directly from browser → Sanity (no Vercel size limit)
+            const uploadRes = await fetch(
+                `https://api.sanity.io/v2024-01-01/assets/images/${projectId}?dataset=${dataset}&filename=${encodeURIComponent(file.name)}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': file.type,
+                    },
+                    body: file,
+                }
+            )
+
+            const result = await uploadRes.json()
+            if (!uploadRes.ok) throw new Error(result.error?.description || 'Upload failed')
+
+            const assetId  = result.document._id as string
+            const assetUrl = result.document.url as string
+
+            setPreview(assetUrl)
+            onUploaded(assetId, assetUrl)
         } catch (e: unknown) {
             setError(e instanceof Error ? e.message : 'Upload failed')
         } finally {
             setUploading(false)
+            setProgress('')
         }
     }
 
@@ -76,12 +94,12 @@ export default function ImageUpload({ label = 'Image', currentUrl, onUploaded }:
                 <div
                     onDrop={onDrop}
                     onDragOver={e => e.preventDefault()}
-                    onClick={() => inputRef.current?.click()}
-                    className="w-full h-40 border-2 border-dashed border-stone-200 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-[#B05B3B] hover:bg-[#F5EAE4]/30 transition-colors"
+                    onClick={() => !uploading && inputRef.current?.click()}
+                    className="w-full h-40 border-2 border-dashed border-stone-200 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-accent hover:bg-accent-light/30 transition-colors"
                 >
                     <Upload size={22} className="text-stone-400" />
                     <p className="text-sm text-stone-500">
-                        {uploading ? 'Uploading…' : 'Click or drag image here'}
+                        {uploading ? progress : 'Click or drag image here'}
                     </p>
                 </div>
             )}
