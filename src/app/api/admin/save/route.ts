@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
 
     try {
         if (_id) {
+            await writeClient.createIfNotExists({ _id, _type })
             await writeClient
                 .patch(_id)
                 .set(fields)
