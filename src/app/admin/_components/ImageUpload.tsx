@@ -18,12 +18,18 @@ export default function ImageUpload({ label = 'Image', currentUrl, onUploaded }:
 
     async function handleFile(file: File) {
         setError('')
+        if (file.size > 4 * 1024 * 1024) {
+            setError('Image is too large (max 4 MB). Please compress it first.')
+            return
+        }
         setUploading(true)
         try {
             const fd = new FormData()
             fd.append('file', file)
             const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-            const data = await res.json()
+            const text = await res.text()
+            let data: { assetId?: string; url?: string; error?: string }
+            try { data = JSON.parse(text) } catch { throw new Error(text.slice(0, 120)) }
             if (!res.ok) throw new Error(data.error || 'Upload failed')
             setPreview(data.url)
             onUploaded(data.assetId, data.url)
