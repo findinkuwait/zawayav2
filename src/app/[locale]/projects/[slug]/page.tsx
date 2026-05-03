@@ -1,4 +1,3 @@
-import { sanityFetch } from '@/sanity/lib/live'
 import { client } from '@/sanity/lib/client'
 import { PROJECT_QUERY, PROJECT_SLUGS_QUERY } from '@/sanity/lib/queries'
 import { getTranslations } from 'next-intl/server'
@@ -16,8 +15,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
     const { locale, slug } = await params
     const t = await getTranslations({ locale, namespace: 'Projects.Meta' })
-    const { data } = await sanityFetch({ query: PROJECT_QUERY, params: { slug } })
-    const cms = data as CmsProjectFull | null
+    const cms = await client.fetch(PROJECT_QUERY, { slug }, { next: { revalidate: 60 } }) as CmsProjectFull | null
     return {
         title: `${bl(cms?.title, locale) || slug.replace(/-/g, ' ')} | Zawaya`,
         description: t('description'),
@@ -27,8 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function SingleProjectPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
     const { locale, slug } = await params
     const t = await getTranslations({ locale, namespace: 'SingleProject' })
-    const { data } = await sanityFetch({ query: PROJECT_QUERY, params: { slug } })
-    const cms = data as CmsProjectFull | null
+    const cms = await client.fetch(PROJECT_QUERY, { slug }, { next: { revalidate: 60 } }) as CmsProjectFull | null
 
     // Fallback to static data when CMS has no document yet
     const project = {

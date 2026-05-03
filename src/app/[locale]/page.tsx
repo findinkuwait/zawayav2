@@ -1,4 +1,4 @@
-import { sanityFetch, SanityLive } from '@/sanity/lib/live'
+import { client } from '@/sanity/lib/client'
 import {
     HOME_QUERY,
     SERVICES_QUERY,
@@ -17,12 +17,12 @@ import TestimonialsSection from '@/components/home/TestimonialsSection'
 import CTASection         from '@/components/home/CTASection'
 
 export default async function HomePage() {
-    const [{ data: homeData }, { data: services }, { data: projects }, { data: testimonials }] =
+    const [homeData, services, projects, testimonials] =
         await Promise.all([
-            sanityFetch({ query: HOME_QUERY }),
-            sanityFetch({ query: SERVICES_QUERY }),
-            sanityFetch({ query: FEATURED_PROJECTS_QUERY }),
-            sanityFetch({ query: TESTIMONIALS_QUERY }),
+            client.fetch(HOME_QUERY, {}, { next: { revalidate: 60 } }),
+            client.fetch(SERVICES_QUERY, {}, { next: { revalidate: 60 } }),
+            client.fetch(FEATURED_PROJECTS_QUERY, {}, { next: { revalidate: 60 } }),
+            client.fetch(TESTIMONIALS_QUERY, {}, { next: { revalidate: 60 } }),
         ])
 
     return (
@@ -37,7 +37,6 @@ export default async function HomePage() {
             <WhyChooseUsSection cmsData={homeData} />
             <TestimonialsSection cmsTestimonials={testimonials} />
             <CTASection         cmsData={homeData} />
-            <SanityLive />
         </>
     )
 }

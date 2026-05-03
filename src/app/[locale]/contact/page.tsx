@@ -1,4 +1,4 @@
-import { sanityFetch } from '@/sanity/lib/live'
+import { client } from '@/sanity/lib/client'
 import { CONTACT_QUERY } from '@/sanity/lib/queries'
 import { getTranslations } from 'next-intl/server'
 import SectionHeading from '@/components/ui/SectionHeading'
@@ -15,8 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: 'Contact' })
-    const { data } = await sanityFetch({ query: CONTACT_QUERY })
-    const cms = data as CmsContactData | null
+    const cms = await client.fetch(CONTACT_QUERY, {}, { next: { revalidate: 60 } }) as CmsContactData | null
 
     const title     = bl(cms?.title,     locale) || t('title')
     const subtitle  = bl(cms?.subtitle,  locale) || t('subtitle')
