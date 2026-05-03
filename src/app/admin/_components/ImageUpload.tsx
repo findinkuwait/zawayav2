@@ -23,12 +23,12 @@ export default function ImageUpload({ label = 'Image', currentUrl, onUploaded }:
             const fd = new FormData()
             fd.append('file', file)
             const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-            if (!res.ok) throw new Error('Upload failed')
             const data = await res.json()
+            if (!res.ok) throw new Error(data.error || 'Upload failed')
             setPreview(data.url)
             onUploaded(data.assetId, data.url)
-        } catch {
-            setError('Upload failed — check your Sanity API token')
+        } catch (e: unknown) {
+            setError(e instanceof Error ? e.message : 'Upload failed')
         } finally {
             setUploading(false)
         }
