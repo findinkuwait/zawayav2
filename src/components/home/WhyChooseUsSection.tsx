@@ -4,11 +4,14 @@ import { useTranslations, useLocale } from 'next-intl';
 import SectionHeading from '../ui/SectionHeading';
 import { motion } from 'framer-motion';
 import { Users, ShieldCheck, Clock, Layers } from 'lucide-react';
+import type { CmsHomeData } from '@/sanity/lib/types';
+import { bl } from '@/sanity/lib/types';
 
-export default function WhyChooseUsSection() {
+export default function WhyChooseUsSection({ cmsData }: { cmsData?: CmsHomeData | null }) {
     const t = useTranslations('Home.WhyUs');
     const locale = useLocale();
     const isRtl = locale === 'ar';
+    const sectionTitle = bl(cmsData?.whyUsTitle, locale) || t('title')
 
     const features = [
         { icon: Users,       title: t('f1_title'), desc: t('f1_desc') },
@@ -21,7 +24,7 @@ export default function WhyChooseUsSection() {
         <section className="py-24 md:py-32 bg-alternate">
             <div className="container mx-auto px-6 md:px-12">
                 <div className={`flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 ${isRtl ? 'md:flex-row-reverse' : ''}`}>
-                    <SectionHeading title={t('title')} />
+                    <SectionHeading title={sectionTitle} />
                     <motion.p
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}

@@ -4,8 +4,11 @@ import { motion, useScroll, useTransform, useInView, animate, AnimatePresence } 
 import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react';
+import type { CmsHomeData, CmsHeroSlide } from '@/sanity/lib/types';
+import { bl } from '@/sanity/lib/types';
+import { urlFor } from '@/sanity/lib/image';
 
-const HERO_SLIDES = [
+const FALLBACK_SLIDES = [
     {
         img: '/hero.jpg',
         title: { en: 'Luxury Hotel Lobby', ar: 'لوبي فندق فاخر' },
@@ -24,13 +27,18 @@ const HERO_SLIDES = [
         location: { en: 'Doha, Qatar', ar: 'الدوحة، قطر' },
         category: { en: 'Residential', ar: 'سكني' },
     },
+] as const;
+
+const MINI_STATS_FALLBACK = [
+    { value: 120, suffix: '+', label: { en: 'Projects',  ar: 'مشروع' } },
+    { value: 15,  suffix: '+', label: { en: 'Years',     ar: 'عاماً' } },
+    { value: 8,   suffix: '+', label: { en: 'Countries', ar: 'دول'   } },
 ];
 
-const MINI_STATS = [
-    { value: 120, suffix: '+', label: { en: 'Projects', ar: 'مشروع' } },
-    { value: 15,  suffix: '+', label: { en: 'Years',    ar: 'عاماً' } },
-    { value: 8,   suffix: '+', label: { en: 'Countries', ar: 'دول' } },
-];
+function parseStatValue(raw: string): { value: number; suffix: string } {
+    const m = /^(\d+)(.*)$/.exec(raw.trim())
+    return m ? { value: parseInt(m[1], 10), suffix: m[2] } : { value: 0, suffix: '' }
+}
 
 function AnimatedCount({ to, suffix }: { to: number; suffix: string }) {
     const ref = useRef<HTMLSpanElement>(null);
@@ -50,7 +58,7 @@ function AnimatedCount({ to, suffix }: { to: number; suffix: string }) {
     return <span ref={ref}>{val}{suffix}</span>;
 }
 
-export default function HeroSection() {
+export default function HeroSection({ cmsData }: { cmsData?: CmsHomeData | null }) {
     const t = useTranslations('Home.Hero');
     const locale = useLocale();
     const isRtl = locale === 'ar';
@@ -60,12 +68,23 @@ export default function HeroSection() {
     const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
     const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
 
-    // Image carousel — auto-advances every 5s
+    // Build slides from CMS or fallback
+    const slides: Array<{ img: string; title: { en: string; ar: string }; location: { en: string; ar: string }; category: { en: string; ar: string } }> =
+        cmsData?.heroSlides && cmsData.heroSlides.length > 0
+            ? cmsData.heroSlides.map((s: CmsHeroSlide) => ({
+                  img:      s.image ? urlFor(s.image).width(2000).url() : FALLBACK_SLIDES[0].img,
+                  title:    { en: s.title?.en ?? '', ar: s.title?.ar ?? '' },
+                  location: { en: s.location?.en ?? '', ar: s.location?.ar ?? '' },
+                  category: { en: s.category?.en ?? '', ar: s.category?.ar ?? '' },
+              }))
+            : [...FALLBACK_SLIDES]
+
     const [activeSlide, setActiveSlide] = useState(0);
     useEffect(() => {
-        const id = setInterval(() => setActiveSlide(p => (p + 1) % HERO_SLIDES.length), 5000);
+        const id = setInterval(() => setActiveSlide(p => (p + 1) % slides.length), 5000);
         return () => clearInterval(id);
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [slides.length]);
 
     // Mouse spotlight
     const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
@@ -78,9 +97,24 @@ export default function HeroSection() {
         });
     }, []);
 
-    const words = (t('headline') as string).split(' ');
-    const slide = HERO_SLIDES[activeSlide];
+    const eyebrow     = bl(cmsData?.heroEyebrow,     locale) || t('eyebrow')
+    const btnProjects = bl(cmsData?.heroBtnProjects, locale) || t('btnProjects')
+    const btnContact  = bl(cmsData?.heroBtnContact,  locale) || t('btnContact')
+    const headline    = bl(cmsData?.heroHeadline,    locale) || t('headline')
+    const subheading  = bl(cmsData?.heroSubheading,  locale) || t('subheading1')
+    const words = headline.split(' ');
+    const slide = slides[activeSlide] ?? slides[0];
     const lang = locale as 'en' | 'ar';
+
+    const badgeValue = cmsData?.heroBadgeValue || '15+'
+    const badgeLabel = bl(cmsData?.heroBadgeLabel, locale) || (isRtl ? 'عاماً من الإبداع' : 'Years of Craft')
+
+    const miniStats = cmsData?.stats?.length
+        ? cmsData.stats.map(s => {
+              const { value, suffix } = parseStatValue(s.value ?? '')
+              return { value, suffix, label: { en: s.label?.en ?? '', ar: s.label?.ar ?? '' } }
+          })
+        : MINI_STATS_FALLBACK;
 
     return (
         <section
@@ -118,7 +152,7 @@ export default function HeroSection() {
                     >
                         <span className="block w-8 h-px bg-accent" />
                         <p className="text-[11px] font-body uppercase tracking-[0.3em] text-accent">
-                            {t('eyebrow')}
+                            {eyebrow}
                         </p>
                     </motion.div>
 
@@ -153,7 +187,7 @@ export default function HeroSection() {
                         transition={{ duration: 0.8, delay: 0.82, ease: 'easeOut' }}
                         className="text-base md:text-lg text-secondary font-body max-w-sm leading-relaxed mb-10"
                     >
-                        {t('subheading1')}
+                        {subheading}
                     </motion.p>
 
                     {/* CTAs */}
@@ -169,7 +203,7 @@ export default function HeroSection() {
                             className={`group inline-flex items-stretch bg-accent text-white text-sm font-medium font-body overflow-hidden hover:bg-accent-hover transition-colors duration-300 ${isRtl ? 'flex-row-reverse' : ''}`}
                         >
                             <span className="px-8 py-4 flex items-center">
-                                {t('btnProjects')}
+                                {btnProjects}
                             </span>
                             {/* Arrow compartment — separated by thin white line */}
                             <span className={`w-12 flex items-center justify-center border-white/20 transition-colors duration-300 group-hover:bg-accent-hover/60 ${isRtl ? 'border-e' : 'border-s'}`}>
@@ -188,7 +222,7 @@ export default function HeroSection() {
                             {/* Fill sweeps up from bottom on hover */}
                             <span className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-380 ease-[cubic-bezier(0.76,0,0.24,1)]" />
                             <span className="relative z-10 transition-colors duration-200 group-hover:text-white">
-                                {t('btnContact')}
+                                {btnContact}
                             </span>
                             <ArrowRight
                                 size={14}
@@ -206,7 +240,7 @@ export default function HeroSection() {
                     className={`flex items-end justify-between mt-12 ${isRtl ? 'flex-row-reverse' : ''}`}
                 >
                     <div className={`flex items-stretch gap-0 ${isRtl ? 'flex-row-reverse gap-6' : 'divide-x divide-border'}`}>
-                        {MINI_STATS.map((stat, i) => (
+                        {miniStats.map((stat, i) => (
                             <div key={i} className={`${isRtl ? '' : 'px-6 first:pl-0 last:pr-0'} flex flex-col gap-1`}>
                                 <span className="text-2xl md:text-3xl font-heading font-bold text-primary leading-none">
                                     <AnimatedCount to={stat.value} suffix={stat.suffix} />
@@ -257,7 +291,7 @@ export default function HeroSection() {
                                 animate={{ scale: 1.08 }}
                                 transition={{ duration: 5.5, ease: 'linear' }}
                                 className="absolute inset-0 bg-cover bg-center"
-                                style={{ backgroundImage: `url("${HERO_SLIDES[activeSlide].img}")` }}
+                                style={{ backgroundImage: `url("${slides[activeSlide]?.img ?? ''}")` }}
                             />
                         </motion.div>
                     </AnimatePresence>
@@ -288,7 +322,7 @@ export default function HeroSection() {
                     </span>
                     <span className="text-white/25 text-xs font-body">/</span>
                     <span className="text-xs text-white/25 font-body tabular-nums">
-                        {String(HERO_SLIDES.length).padStart(2, '0')}
+                        {String(slides.length).padStart(2, '0')}
                     </span>
                 </motion.div>
 
@@ -299,7 +333,7 @@ export default function HeroSection() {
                     transition={{ duration: 0.7, delay: 1.5 }}
                     className={`absolute top-1/2 -translate-y-1/2 ${isRtl ? 'left-5' : 'right-5'} z-20 flex flex-col gap-2 items-center`}
                 >
-                    {HERO_SLIDES.map((_, i) => (
+                    {slides.map((_, i) => (
                         <button
                             key={i}
                             onClick={() => setActiveSlide(i)}
@@ -316,9 +350,9 @@ export default function HeroSection() {
                     transition={{ duration: 0.7, delay: 1.4 }}
                     className={`absolute bottom-10 ${isRtl ? 'left-8' : 'right-8'} bg-white/92 backdrop-blur-sm px-6 py-5 shadow-lg z-20`}
                 >
-                    <p className="text-4xl font-bold font-heading text-accent leading-none">15<span className="text-xl">+</span></p>
+                    <p className="text-4xl font-bold font-heading text-accent leading-none">{badgeValue}</p>
                     <p className="text-[10px] uppercase tracking-widest text-secondary font-body mt-1.5">
-                        {isRtl ? 'عاماً من الإبداع' : 'Years of Craft'}
+                        {badgeLabel}
                     </p>
                 </motion.div>
 

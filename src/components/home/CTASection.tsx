@@ -4,15 +4,20 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import type { CmsHomeData } from '@/sanity/lib/types';
+import { bl } from '@/sanity/lib/types';
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-export default function CTASection() {
+export default function CTASection({ cmsData }: { cmsData?: CmsHomeData | null }) {
     const t = useTranslations('Home.CTA');
     const locale = useLocale();
     const isRtl = locale === 'ar';
 
-    const title: string = t('title');
+    const title      = bl(cmsData?.ctaTitle,      locale) || t('title')
+    const subtitle   = bl(cmsData?.ctaSubtitle,   locale) || t('subtitle')
+    const btnConsult = bl(cmsData?.ctaBtnConsult, locale) || t('btnConsult')
+    const btnContact = bl(cmsData?.ctaBtnContact, locale) || t('btnContact')
     const words = title.split(' ');
 
     return (
@@ -109,7 +114,7 @@ export default function CTASection() {
                     transition={{ duration: 0.65, delay: 0.28 }}
                     className="text-base text-secondary font-body max-w-sm mx-auto leading-relaxed mb-12"
                 >
-                    {t('subtitle')}
+                    {subtitle}
                 </motion.p>
 
                 {/* CTAs */}
@@ -126,7 +131,7 @@ export default function CTASection() {
                         className={`group inline-flex items-stretch bg-accent text-white text-sm font-medium font-body overflow-hidden hover:bg-accent-hover transition-colors duration-300 ${isRtl ? 'flex-row-reverse' : ''}`}
                     >
                         <span className="px-9 py-4 flex items-center">
-                            {t('btnConsult')}
+                            {btnConsult}
                         </span>
                         <span className={`w-12 flex items-center justify-center border-white/20 group-hover:bg-accent-hover/60 transition-colors duration-300 ${isRtl ? 'border-e' : 'border-s'}`}>
                             <ArrowUpRight
@@ -143,7 +148,7 @@ export default function CTASection() {
                     >
                         <span className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-380 ease-[cubic-bezier(0.76,0,0.24,1)]" />
                         <span className="relative z-10 transition-colors duration-200 group-hover:text-white">
-                            {t('btnContact')}
+                            {btnContact}
                         </span>
                         <ArrowRight
                             size={14}

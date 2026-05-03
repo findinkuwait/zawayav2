@@ -5,11 +5,23 @@ import { motion } from 'framer-motion';
 import { Link } from '@/i18n/routing';
 import { ArrowRight } from 'lucide-react';
 import SectionHeading from '../ui/SectionHeading';
+import type { CmsHomeData } from '@/sanity/lib/types';
+import { bl } from '@/sanity/lib/types';
+import { urlFor } from '@/sanity/lib/image';
 
-export default function AboutPreview() {
+export default function AboutPreview({ cmsData }: { cmsData?: CmsHomeData | null }) {
     const t = useTranslations('Home.About');
     const locale = useLocale();
     const isRtl = locale === 'ar';
+
+    const title          = bl(cmsData?.aboutTitle,          locale) || t('title')
+    const p1             = bl(cmsData?.aboutP1,             locale) || t('p1')
+    const p2             = bl(cmsData?.aboutP2,             locale) || t('p2')
+    const btn            = bl(cmsData?.aboutBtn,            locale) || t('btn')
+    const estTag         = cmsData?.aboutEstTag || 'EST. 2008'
+    const featuredStat   = bl(cmsData?.aboutFeaturedStat,   locale) || (isRtl ? '١٢٠+ مشروع راقٍ' : '120+ Premium Projects')
+    const featuredStatSub= bl(cmsData?.aboutFeaturedStatSub,locale) || (isRtl ? 'في الكويت والمنطقة' : 'Across Kuwait & the region')
+    const imgUrl         = cmsData?.aboutImage ? urlFor(cmsData.aboutImage).width(1200).url() : 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop'
 
     return (
         <section className="py-24 md:py-32 bg-alternate overflow-hidden">
@@ -35,7 +47,7 @@ export default function AboutPreview() {
                         <div className="relative z-10 h-96 md:h-[580px] overflow-hidden">
                             <div
                                 className="absolute inset-0 bg-cover bg-center scale-100 hover:scale-[1.03] transition-transform duration-700 ease-out"
-                                style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop")' }}
+                                style={{ backgroundImage: `url("${imgUrl}")` }}
                             />
                             {/* Subtle top vignette */}
                             <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-transparent pointer-events-none" />
@@ -43,7 +55,7 @@ export default function AboutPreview() {
 
                         {/* Terracotta caption tag */}
                         <div className={`absolute bottom-6 ${isRtl ? 'left-6' : 'right-6'} bg-accent px-5 py-3 z-20`}>
-                            <p className="text-white text-[10px] font-body uppercase tracking-widest">Est. 2008</p>
+                            <p className="text-white text-[10px] font-body uppercase tracking-widest">{estTag}</p>
                         </div>
                     </motion.div>
 
@@ -55,20 +67,20 @@ export default function AboutPreview() {
                         transition={{ duration: 0.9, delay: 0.2, ease: 'easeOut' }}
                         className={`w-full md:flex-1 flex flex-col pt-0 md:pt-20 ${isRtl ? 'md:pe-16' : 'md:ps-16'}`}
                     >
-                        <SectionHeading title={t('title')} />
+                        <SectionHeading title={title} />
 
                         <div className="space-y-5 text-secondary text-base font-body leading-relaxed mb-10 max-w-md">
-                            <p>{t('p1')}</p>
-                            <p>{t('p2')}</p>
+                            <p>{p1}</p>
+                            <p>{p2}</p>
                         </div>
 
                         {/* Terracotta left-border stat */}
                         <div className={`border-s-2 border-accent ps-5 mb-12`}>
                             <p className="text-2xl font-heading font-bold text-primary leading-snug">
-                                {locale === 'ar' ? '١٢٠+ مشروع راقٍ' : '120+ Premium Projects'}
+                                {featuredStat}
                             </p>
                             <p className="text-sm text-secondary font-body mt-1">
-                                {locale === 'ar' ? 'في الكويت والمنطقة' : 'Across Kuwait & the region'}
+                                {featuredStatSub}
                             </p>
                         </div>
 
@@ -76,7 +88,7 @@ export default function AboutPreview() {
                             href="/about"
                             className={`group inline-flex items-center gap-3 text-sm font-medium font-body text-accent hover:text-accent-hover transition-colors duration-300`}
                         >
-                            {t('btn')}
+                            {btn}
                             <ArrowRight size={14} className={`transition-transform duration-300 ${isRtl ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
                         </Link>
                     </motion.div>

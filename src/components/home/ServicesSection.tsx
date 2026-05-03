@@ -6,15 +6,17 @@ import SectionHeading from '../ui/SectionHeading';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from '@/i18n/routing';
+import type { CmsService, CmsHomeData } from '@/sanity/lib/types';
+import { bl } from '@/sanity/lib/types';
+import { urlFor } from '@/sanity/lib/image';
 
-const SERVICE_IMAGES = [
+const FALLBACK_IMAGES = [
     'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=900&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1555529771-835f59fc5efe?q=80&w=900&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=900&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=900&auto=format&fit=crop',
 ];
 
-// Key capabilities shown when a service is active
 const CAPABILITIES_EN = [
     ['Partitions', 'Ceilings', 'Custom Joinery'],
     ['Brand Identity', 'Visual Merch.', 'Fixtures'],
@@ -28,20 +30,36 @@ const CAPABILITIES_AR = [
     ['جدولة', 'مشتريات', 'تسليم'],
 ];
 
-export default function ServicesSection() {
+export default function ServicesSection({
+    cmsServices,
+    cmsData,
+}: {
+    cmsServices?: CmsService[] | null
+    cmsData?: CmsHomeData | null
+}) {
     const t = useTranslations('Home.Services');
     const locale = useLocale();
     const isRtl = locale === 'ar';
     const [hovered, setHovered] = useState<number>(0);
 
-    const services = [
-        { num: '01', title: t('s1_title'), desc: t('s1_desc'), tag: isRtl ? 'تجاري وسكني'         : 'Commercial & Residential' },
-        { num: '02', title: t('s2_title'), desc: t('s2_desc'), tag: isRtl ? 'تجزئة وعلامات تجارية' : 'Retail & Branding' },
-        { num: '03', title: t('s3_title'), desc: t('s3_desc'), tag: isRtl ? 'فنادق ومطاعم'         : 'Hotels & F&B' },
-        { num: '04', title: t('s4_title'), desc: t('s4_desc'), tag: isRtl ? 'تسليم مفتاح'          : 'Turnkey Delivery' },
-    ];
+    const services = cmsServices && cmsServices.length > 0
+        ? cmsServices.map((s, idx) => ({
+              num: String(idx + 1).padStart(2, '0'),
+              title: bl(s.title, locale) || '',
+              desc:  bl(s.description, locale) || '',
+              tag:   bl(s.tag, locale) || '',
+              image: s.image ? urlFor(s.image).width(900).url() : FALLBACK_IMAGES[idx] ?? FALLBACK_IMAGES[0],
+              capabilities: (bl(s.capabilities, locale) || '').split(',').map((c) => c.trim()).filter(Boolean),
+          }))
+        : [
+              { num: '01', title: t('s1_title'), desc: t('s1_desc'), tag: isRtl ? 'تجاري وسكني'          : 'Commercial & Residential', image: FALLBACK_IMAGES[0], capabilities: isRtl ? CAPABILITIES_AR[0] : CAPABILITIES_EN[0] },
+              { num: '02', title: t('s2_title'), desc: t('s2_desc'), tag: isRtl ? 'تجزئة وعلامات تجارية' : 'Retail & Branding',         image: FALLBACK_IMAGES[1], capabilities: isRtl ? CAPABILITIES_AR[1] : CAPABILITIES_EN[1] },
+              { num: '03', title: t('s3_title'), desc: t('s3_desc'), tag: isRtl ? 'فنادق ومطاعم'          : 'Hotels & F&B',              image: FALLBACK_IMAGES[2], capabilities: isRtl ? CAPABILITIES_AR[2] : CAPABILITIES_EN[2] },
+              { num: '04', title: t('s4_title'), desc: t('s4_desc'), tag: isRtl ? 'تسليم مفتاح'           : 'Turnkey Delivery',          image: FALLBACK_IMAGES[3], capabilities: isRtl ? CAPABILITIES_AR[3] : CAPABILITIES_EN[3] },
+          ]
 
-    const capabilities = isRtl ? CAPABILITIES_AR : CAPABILITIES_EN;
+    const sectionTitle    = bl(cmsData?.servicesTitle,    locale) || t('title')
+    const sectionSubtitle = bl(cmsData?.servicesSubtitle, locale) || t('subtitle')
 
     return (
         <section className="py-24 md:py-36 bg-background">
@@ -51,7 +69,7 @@ export default function ServicesSection() {
 
                     {/* ── List side ───────────────────────────── */}
                     <div className="flex-1 min-w-0">
-                        <SectionHeading title={t('title')} subtitle={t('subtitle')} />
+                        <SectionHeading title={sectionTitle} subtitle={sectionSubtitle} />
 
                         <ol>
                             {services.map((svc, idx) => (
@@ -105,7 +123,7 @@ export default function ServicesSection() {
 
                                                 {/* Capability chips */}
                                                 <div className={`flex flex-wrap gap-2 mb-5 ${isRtl ? 'justify-end' : ''}`}>
-                                                    {capabilities[idx].map((cap) => (
+                                                    {svc.capabilities.map((cap) => (
                                                         <span
                                                             key={cap}
                                                             className="text-[10px] uppercase tracking-wider font-body text-accent border border-accent/30 bg-accent/5 px-3 py-1"
@@ -144,7 +162,7 @@ export default function ServicesSection() {
                                     exit={{ opacity: 0, scale: 0.97 }}
                                     transition={{ duration: 0.5, ease: 'easeOut' }}
                                     className="absolute inset-0 bg-cover bg-center"
-                                    style={{ backgroundImage: `url("${SERVICE_IMAGES[hovered]}")` }}
+                                    style={{ backgroundImage: `url("${services[hovered]?.image ?? FALLBACK_IMAGES[0]}")` }}
                                 />
                             </AnimatePresence>
 
@@ -161,7 +179,7 @@ export default function ServicesSection() {
                             {/* Bottom caption */}
                             <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-primary/70 to-transparent p-6 z-10">
                                 <p className="text-white/50 text-[9px] uppercase tracking-widest font-body mb-1.5">
-                                    {services[hovered].num} / 04
+                                    {services[hovered]?.num} / {String(services.length).padStart(2, '0')}
                                 </p>
                                 <p className="text-white text-base font-heading font-bold leading-snug">
                                     {services[hovered].title}

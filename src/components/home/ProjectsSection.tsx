@@ -6,28 +6,19 @@ import SectionHeading from '../ui/SectionHeading';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from '@/i18n/routing';
 import { ArrowUpRight } from 'lucide-react';
+import type { CmsProject, CmsHomeData } from '@/sanity/lib/types';
+import { bl } from '@/sanity/lib/types';
+import { urlFor } from '@/sanity/lib/image';
 
-const projects = [
-    {
-        id: 'p1', category: 'Retail', title: 'Luxury Boutique, Avenues', location: 'Kuwait City',
-        img: 'https://images.unsplash.com/photo-1555529771-835f59fc5efe?q=80&w=1600&auto=format&fit=crop',
-    },
-    {
-        id: 'p2', category: 'Hospitality', title: 'Grand Hotel Lobby', location: 'Dubai, UAE',
-        img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop',
-    },
-    {
-        id: 'p3', category: 'Retail', title: 'Concept Store', location: 'Riyadh, KSA',
-        img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop',
-    },
-    {
-        id: 'p4', category: 'Residential', title: 'Modern Penthouse', location: 'Doha, Qatar',
-        img: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200&auto=format&fit=crop',
-    },
+const FALLBACK_PROJECTS = [
+    { id: 'p1', category: 'Retail',       title: 'Luxury Boutique, Avenues', location: 'Kuwait City',  img: 'https://images.unsplash.com/photo-1555529771-835f59fc5efe?q=80&w=1600&auto=format&fit=crop' },
+    { id: 'p2', category: 'Hospitality',  title: 'Grand Hotel Lobby',        location: 'Dubai, UAE',    img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop' },
+    { id: 'p3', category: 'Retail',       title: 'Concept Store',            location: 'Riyadh, KSA',   img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop' },
+    { id: 'p4', category: 'Residential',  title: 'Modern Penthouse',         location: 'Doha, Qatar',   img: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200&auto=format&fit=crop' },
 ];
 
 interface PinCardProps {
-    project: typeof projects[0];
+    project: { id: string; category: string; title: string; location: string; img: string };
     index: number;
 }
 
@@ -79,10 +70,28 @@ function PinCard({ project, index }: PinCardProps) {
     );
 }
 
-export default function ProjectsSection() {
+export default function ProjectsSection({
+    cmsProjects,
+    cmsData,
+}: {
+    cmsProjects?: CmsProject[] | null
+    cmsData?: CmsHomeData | null
+}) {
     const t = useTranslations('Home.Projects');
     const locale = useLocale();
     const isRtl = locale === 'ar';
+
+    const projects = cmsProjects && cmsProjects.length > 0
+        ? cmsProjects.map((p) => ({
+              id:       p.slug?.current ?? p._id,
+              category: bl(p.category, locale) || '',
+              title:    bl(p.title,    locale) || '',
+              location: '',
+              img:      p.coverImage ? urlFor(p.coverImage).width(1600).url() : FALLBACK_PROJECTS[0].img,
+          }))
+        : FALLBACK_PROJECTS
+
+    const sectionTitle = bl(cmsData?.servicesTitle, locale) || t('title')
 
     const sectionRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -100,7 +109,7 @@ export default function ProjectsSection() {
             {/* ── Section header — normal flow ── */}
             <div className="container mx-auto px-6 md:px-12 pt-24 md:pt-36 pb-12">
                 <div className={`flex flex-col md:flex-row md:items-end justify-between gap-6 ${isRtl ? 'md:flex-row-reverse' : ''}`}>
-                    <SectionHeading title={t('title')} />
+                    <SectionHeading title={sectionTitle} />
                     <Link
                         href="/projects"
                         className="group flex items-center gap-2 text-sm font-medium font-body text-accent hover:text-accent-hover transition-colors duration-300 mb-14 shrink-0"
@@ -136,7 +145,7 @@ export default function ProjectsSection() {
                         dir="ltr"
                     >
                         {projects.map((p, i) => (
-                            <PinCard key={p.id} project={p} index={i} />
+                            <PinCard key={p.id} project={{ id: p.id, category: p.category, title: p.title, location: p.location, img: p.img }} index={i} />
                         ))}
 
                         {/* End card — View All CTA */}
@@ -157,7 +166,7 @@ export default function ProjectsSection() {
                                 <ArrowUpRight size={20} />
                             </Link>
                             <p className="text-5xl font-heading font-bold text-border/30 select-none absolute bottom-6 right-6">
-                                +{projects.length}
+                                +{projects.length - 4 > 0 ? projects.length - 4 : projects.length}
                             </p>
                         </motion.div>
                     </motion.div>

@@ -1,20 +1,29 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import type { CmsTestimonial } from '@/sanity/lib/types';
+import { bl } from '@/sanity/lib/types';
 
-const SLIDE_DURATION = 6000; // ms per testimonial
+const SLIDE_DURATION = 6000;
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection({ cmsTestimonials }: { cmsTestimonials?: CmsTestimonial[] | null }) {
     const t = useTranslations('Home.Testimonials');
+    const locale = useLocale();
     const [active, setActive] = useState(0);
 
-    const testimonials = [
-        { text: t('t1_text'), author: 'Abdullah Al-Saud', role: 'CEO, Retail Brands Group' },
-        { text: t('t2_text'), author: 'Sarah Jenkins',    role: 'Director, Boutique Hotels' },
-    ];
+    const testimonials = cmsTestimonials && cmsTestimonials.length > 0
+        ? cmsTestimonials.map((item) => ({
+              text:   bl(item.quote, locale) || '',
+              author: item.author,
+              role:   bl(item.role,  locale) || '',
+          }))
+        : [
+              { text: t('t1_text'), author: 'Abdullah Al-Saud', role: 'CEO, Retail Brands Group' },
+              { text: t('t2_text'), author: 'Sarah Jenkins',    role: 'Director, Boutique Hotels' },
+          ]
 
     // Auto-advance
     useEffect(() => {

@@ -1,8 +1,10 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion, useInView, animate } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
+import type { CmsHomeData } from '@/sanity/lib/types';
+import { bl } from '@/sanity/lib/types';
 
 function Counter({ from, to, duration = 2 }: { from: number; to: number; duration?: number }) {
     const ref = useRef<HTMLSpanElement>(null);
@@ -18,15 +20,23 @@ function Counter({ from, to, duration = 2 }: { from: number; to: number; duratio
     return <span ref={ref}>{value}</span>;
 }
 
-export default function StatsSection() {
+export default function StatsSection({ cmsData }: { cmsData?: CmsHomeData | null }) {
     const t = useTranslations('Home.Stats');
+    const locale = useLocale();
 
-    const stats = [
-        { value: 15, suffix: '+', label: t('expLabel') },
-        { value: 120, suffix: '+', label: t('projectsLabel') },
-        { value: 40, suffix: '+', label: t('clientsLabel') },
-        { value: 5, suffix: '', label: t('countriesLabel') },
-    ];
+    const cmsStats = cmsData?.stats
+    const stats = cmsStats && cmsStats.length > 0
+        ? cmsStats.map((s) => {
+              const raw = s.value ?? ''
+              const match = raw.match(/^(\d+)(.*)$/)
+              return { value: match ? parseInt(match[1]) : 0, suffix: match ? match[2] : '', label: bl(s.label, locale) }
+          })
+        : [
+              { value: 15,  suffix: '+', label: t('expLabel') },
+              { value: 120, suffix: '+', label: t('projectsLabel') },
+              { value: 40,  suffix: '+', label: t('clientsLabel') },
+              { value: 5,   suffix: '',  label: t('countriesLabel') },
+          ]
 
     return (
         <section className="bg-background border-y border-border">
