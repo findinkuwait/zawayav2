@@ -21,6 +21,9 @@ import MobileContactBar from '@/components/layout/MobileContactBar';
 import SmoothScrollProvider from '@/components/ui/SmoothScrollProvider';
 import CustomCursor from '@/components/ui/CustomCursor';
 import PageLoader from '@/components/ui/PageLoader';
+import { client } from '@/sanity/lib/client';
+import { SITE_SETTINGS_QUERY } from '@/sanity/lib/queries';
+import type { CmsSiteSettings } from '@/sanity/lib/types';
 
 export default async function LocaleLayout({
     children,
@@ -37,6 +40,7 @@ export default async function LocaleLayout({
     }
 
     const messages = await getMessages();
+    const siteSettings = await client.fetch(SITE_SETTINGS_QUERY, {}, { next: { revalidate: 60 } }) as CmsSiteSettings | null;
 
     return (
         <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={`${playfair.variable} ${inter.variable} ${cairo.variable} ${tajawal.variable}`} suppressHydrationWarning>
@@ -49,7 +53,7 @@ export default async function LocaleLayout({
                         <main className="flex-grow">
                             {children}
                         </main>
-                        <Footer />
+                        <Footer cmsData={siteSettings} locale={locale} />
                     </SmoothScrollProvider>
                     <MobileContactBar />
                     <FloatingWhatsApp />

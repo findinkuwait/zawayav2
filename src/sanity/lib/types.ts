@@ -116,6 +116,19 @@ export interface CmsContactData {
     mapEmbedUrl?: string
 }
 
+export interface CmsSiteSettings {
+    siteName?: string
+    logo?: SanityImage
+    whatsappNumber?: string
+    phone?: string
+    email?: string
+    address?: BilingualString
+    instagram?: string
+    facebook?: string
+    linkedin?: string
+    footerTagline?: BilingualString
+}
+
 // Helper: pick locale value or fallback
 export function bl(field: BilingualString | undefined, locale: string, fallback = ''): string {
     if (!field) return fallback
