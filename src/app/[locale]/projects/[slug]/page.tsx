@@ -16,9 +16,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const { locale, slug } = await params
     const t = await getTranslations({ locale, namespace: 'Projects.Meta' })
     const cms = await client.fetch(PROJECT_QUERY, { slug }, { next: { revalidate: 60 } }) as CmsProjectFull | null
+    const title = `${bl(cms?.title, locale) || slug.replace(/-/g, ' ')} | Zawaya International`
+    const coverUrl = cms?.coverImage
+        ? `https://cdn.sanity.io/images/a6486wf1/production/${cms.coverImage.asset._ref.replace('image-', '').replace(/-(\w+)$/, '.$1')}`
+        : '/og-image.png'
     return {
-        title: `${bl(cms?.title, locale) || slug.replace(/-/g, ' ')} | Zawaya`,
+        title,
         description: t('description'),
+        openGraph: { title, description: t('description'), images: [{ url: coverUrl, width: 1200, height: 630 }] },
+        twitter: { card: 'summary_large_image', title, images: [coverUrl] },
     }
 }
 

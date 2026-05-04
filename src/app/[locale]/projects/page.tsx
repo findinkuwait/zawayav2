@@ -4,10 +4,12 @@ import { ALL_PROJECTS_QUERY } from '@/sanity/lib/queries';
 import ProjectsSection from '@/components/home/ProjectsSection';
 import type { CmsProject } from '@/sanity/lib/types';
 
+import { buildMeta } from '@/lib/seo'
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Projects.Meta' });
-    return { title: t('title'), description: t('description') };
+    return buildMeta(locale, t('title'), t('description'), '/projects')
 }
 
 export default async function ProjectsPage() {

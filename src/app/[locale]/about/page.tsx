@@ -5,10 +5,12 @@ import SectionHeading from '@/components/ui/SectionHeading'
 import type { CmsAboutData } from '@/sanity/lib/types'
 import { bl } from '@/sanity/lib/types'
 
+import { buildMeta } from '@/lib/seo'
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: 'About.Meta' })
-    return { title: t('title'), description: t('description') }
+    return buildMeta(locale, t('title'), t('description'), '/about')
 }
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {

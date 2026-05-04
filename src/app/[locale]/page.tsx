@@ -1,4 +1,16 @@
+import type { Metadata } from 'next'
+import { buildMeta } from '@/lib/seo'
 import { client } from '@/sanity/lib/client'
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+    const { locale } = await params
+    const isAr = locale === 'ar'
+    const title = isAr ? 'زوايا الدولية | تصميم وتجهيز المساحات الداخلية' : 'Zawaya International | Interior Design & Fit-Out Studio'
+    const description = isAr
+        ? 'زوايا الدولية — متخصصون في تصميم وتنفيذ المساحات الداخلية والتجارية الفاخرة في الكويت والمنطقة منذ ٢٠٠٨.'
+        : 'Zawaya International — specialists in high-end interior fit-out and retail space design across Kuwait and the region since 2008.'
+    return buildMeta(locale, title, description, '')
+}
 import {
     HOME_QUERY,
     SERVICES_QUERY,

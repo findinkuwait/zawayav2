@@ -1,13 +1,11 @@
 import { getTranslations } from 'next-intl/server';
-import ProcessSection from '@/components/home/ProcessSection'; // Reusing section
+import ProcessSection from '@/components/home/ProcessSection';
+import { buildMeta } from '@/lib/seo'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Process.Meta' });
-    return {
-        title: t('title'),
-        description: t('description')
-    };
+    return buildMeta(locale, t('title'), t('description'), '/process')
 }
 
 export default async function ProcessPage() {

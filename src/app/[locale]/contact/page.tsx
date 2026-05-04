@@ -6,10 +6,12 @@ import type { CmsContactData } from '@/sanity/lib/types'
 import { bl } from '@/sanity/lib/types'
 import { Phone, Mail, MapPin, Instagram, Facebook, Linkedin } from 'lucide-react'
 
+import { buildMeta } from '@/lib/seo'
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: 'Contact.Meta' })
-    return { title: t('title'), description: t('description') }
+    return buildMeta(locale, t('title'), t('description'), '/contact')
 }
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {

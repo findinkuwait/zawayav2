@@ -2,14 +2,12 @@ import { getTranslations } from 'next-intl/server';
 import SectionHeading from '@/components/ui/SectionHeading';
 import ServiceCard from '@/components/ui/ServiceCard';
 import { PenTool, Store, Coffee, Briefcase } from 'lucide-react';
+import { buildMeta } from '@/lib/seo'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Services.Meta' });
-    return {
-        title: t('title'),
-        description: t('description')
-    };
+    return buildMeta(locale, t('title'), t('description'), '/services')
 }
 
 export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {

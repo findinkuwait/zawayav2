@@ -7,10 +7,12 @@ import { bl } from '@/sanity/lib/types'
 import { urlFor } from '@/sanity/lib/image'
 import Image from 'next/image'
 
+import { buildMeta } from '@/lib/seo'
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: 'Clients.Meta' })
-    return { title: t('title'), description: t('description') }
+    return buildMeta(locale, t('title'), t('description'), '/clients')
 }
 
 export default async function ClientsPage({ params }: { params: Promise<{ locale: string }> }) {
