@@ -1,7 +1,12 @@
+import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+
+export const metadata: Metadata = {
+    icons: { icon: '/favicon.ico', shortcut: '/favicon.ico' },
+};
 import { Playfair_Display, Inter, Cairo, Tajawal } from 'next/font/google';
 import '../globals.css';
 
