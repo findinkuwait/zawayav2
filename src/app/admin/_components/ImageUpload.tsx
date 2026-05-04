@@ -10,6 +10,26 @@ interface Props {
     onUploaded: (assetId: string, url: string) => void
 }
 
+/** Resize + compress to JPEG so it fits Vercel's 4.5 MB body limit while keeping high visual quality */
+function compressImage(file: File, maxPx = 3000, quality = 0.88): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+        const img = new window.Image()
+        img.onerror = reject
+        img.onload = () => {
+            let { width, height } = img
+            if (width > maxPx || height > maxPx) {
+                if (width >= height) { height = Math.round(height * maxPx / width); width = maxPx }
+                else                  { width = Math.round(width * maxPx / height); height = maxPx }
+            }
+            const canvas = document.createElement('canvas')
+            canvas.width = width; canvas.height = height
+            canvas.getContext('2d')!.drawImage(img, 0, 0, width, height)
+            canvas.toBlob(b => b ? resolve(b) : reject(new Error('Compression failed')), 'image/jpeg', quality)
+        }
+        img.src = URL.createObjectURL(file)
+    })
+}
+
 export default function ImageUpload({ label = 'Image', currentUrl, onUploaded }: Props) {
     const [preview, setPreview]     = useState<string | null>(currentUrl ?? null)
     const [uploading, setUploading] = useState(false)
@@ -20,36 +40,22 @@ export default function ImageUpload({ label = 'Image', currentUrl, onUploaded }:
     async function handleFile(file: File) {
         setError('')
         setUploading(true)
-        setProgress('Preparing…')
         try {
-            // Get short-lived credentials from our protected endpoint
-            const credRes = await fetch('/api/admin/upload-credentials')
-            if (!credRes.ok) throw new Error('Not authorized')
-            const { projectId, dataset, token } = await credRes.json()
+            setProgress('Compressing…')
+            const blob = await compressImage(file)
 
             setProgress('Uploading…')
+            const fd = new FormData()
+            fd.append('file', new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }))
 
-            // Upload directly from browser → Sanity (no Vercel size limit)
-            const uploadRes = await fetch(
-                `https://api.sanity.io/v2024-01-01/assets/images/${projectId}?dataset=${dataset}&filename=${encodeURIComponent(file.name)}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': file.type,
-                    },
-                    body: file,
-                }
-            )
+            const res  = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+            const text = await res.text()
+            let data: { assetId?: string; url?: string; error?: string }
+            try { data = JSON.parse(text) } catch { throw new Error(text.slice(0, 150)) }
+            if (!res.ok) throw new Error(data.error || 'Upload failed')
 
-            const result = await uploadRes.json()
-            if (!uploadRes.ok) throw new Error(result.error?.description || 'Upload failed')
-
-            const assetId  = result.document._id as string
-            const assetUrl = result.document.url as string
-
-            setPreview(assetUrl)
-            onUploaded(assetId, assetUrl)
+            setPreview(data.url!)
+            onUploaded(data.assetId!, data.url!)
         } catch (e: unknown) {
             setError(e instanceof Error ? e.message : 'Upload failed')
         } finally {
